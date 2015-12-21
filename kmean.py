@@ -6,12 +6,12 @@ from scipy import ndimage as ndi
 from skimage import morphology
 from skimage.segmentation import slic
 from skimage.data import astronaut
-modelcolor = cv2.imread('E:/git/testnc/tum/tum 1353.JPG')
+modelcolor = cv2.imread('E:/git/testnc/tum/tum 1672.JPG')
 gray = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2GRAY)
 #modelcolor = astronaut()
-segments = slic(modelcolor, n_segments=100, compactness=5)
+segments = slic(modelcolor, n_segments=6, compactness=10)
 fig, ax = plt.subplots(figsize=(4, 3))
-ax.imshow(segments, cmap=plt.cm.gray, interpolation='nearest')
+ax.imshow(segments, cmap=plt.cm.hsv, interpolation='nearest')
 ax.axis('off')
 ax.set_title('Removing small objects')
 plt.show()
