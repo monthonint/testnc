@@ -4,7 +4,7 @@ import skimage.morphology, skimage.data
 import cv2
 from scipy import ndimage as ndi
 from skimage import morphology
-modelcolor = cv2.imread('E:/git/testnc/tum/tum 1353.JPG')
+modelcolor = cv2.imread('E:/git/testnc/tum/K32.JPG')
 #modelcolor = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2HLS)
 #modelcolor = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2HSV)
 cv2.imshow("modelcolor",modelcolor)
