@@ -79,21 +79,27 @@ edges = cv2.Canny(imgedge,150,250);
 height, width = imgedge.shape[:2]
 crop_img = edges[10:height-10, 10:width-10];
 cv2.imshow("origin",crop_img)
+invert = (255-crop_img)
+cv2.imshow("invert",invert)
+
+#fill_img = ndi.binary_fill_holes(crop_img)
 #plt.savefig(pp, format='pdf')
 #plt.savefig('out.jpg', format='jpg', dpi=1000)
 #fill hole of sign
-fill_img = ndi.binary_fill_holes(crop_img)
-fig, ax = plt.subplots(figsize=(4, 3))
-ax.imshow(fill_img, cmap=plt.cm.gray, interpolation='nearest')
-ax.axis('off')
-ax.set_title('Filling the holes')
+# fill_img = ndi.binary_fill_holes(crop_img)
+# fig, ax = plt.subplots(figsize=(4, 3))
+# ax.imshow(fill_img, cmap=plt.cm.gray, interpolation='nearest')
+# ax.axis('off')
+# ax.set_title('Filling the holes')
+#
+# #remove noise
+# img_cleaned = morphology.remove_small_objects(fill_img, 21)
+# fig, ax = plt.subplots(figsize=(4, 3))
+# ax.imshow(img_cleaned, cmap=plt.cm.gray, interpolation='nearest')
+# ax.axis('off')
+# ax.set_title('Removing small objects')
 
-#remove noise
-img_cleaned = morphology.remove_small_objects(fill_img, 21)
-fig, ax = plt.subplots(figsize=(4, 3))
-ax.imshow(img_cleaned, cmap=plt.cm.gray, interpolation='nearest')
-ax.axis('off')
-ax.set_title('Removing small objects')
+
 plt.show()
 #cv2.imshow("Name",segments)
 cv2.waitKey(0)
