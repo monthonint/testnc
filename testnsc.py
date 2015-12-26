@@ -33,7 +33,11 @@ ax.set_title('Filling the holes')
 
 #remove noise
 img_cleaned = morphology.remove_small_objects(fill_img, 21)
-imsave("outedge.jpg", img_cleaned)
+imguint = np.uint8(img_cleaned)
+print imguint
+imguint[imguint==1] = 255
+cv2.imwrite("outedge.jpg", imguint)
+# imsave("outedge.jpg", img_cleaned)
 fig, ax = plt.subplots(figsize=(4, 3))
 ax.imshow(img_cleaned, cmap=plt.cm.gray, interpolation='nearest')
 ax.axis('off')
