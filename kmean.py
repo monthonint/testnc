@@ -80,8 +80,12 @@ cv2.imshow("gray",imgedge)
 edges = cv2.Canny(imgedge,150,250);
 height, width = imgedge.shape[:2]
 crop_img = edges[10:height-10, 10:width-10];
-cv2.imshow("origin",crop_img)
-invert = 255-crop_img
+kernel = np.ones((1,2),np.uint8);
+dilation = cv2.dilate(crop_img,kernel,iterations = 1)
+kernel1 = np.ones((2,1),np.uint8);
+dilation1 = cv2.dilate(dilation,kernel1,iterations = 1)
+cv2.imshow("origin",dilation1)
+invert = 255-dilation1
 cv2.imwrite("outkmean.jpg",invert);
 #mpimg.imsave("outkmean.jpg", invert)
 #cv2.imshow("invert",invert)
