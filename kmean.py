@@ -8,6 +8,8 @@ from skimage.segmentation import slic
 from skimage.data import astronaut
 from sklearn.cluster import KMeans
 import matplotlib.image as mpimg
+from PIL import Image
+import PIL.ImageOps
 def centroid_histogram(clt):
 	# grab the number of different clusters and create a histogram
 	# based on the number of pixels assigned to each cluster
@@ -79,9 +81,10 @@ edges = cv2.Canny(imgedge,150,250);
 height, width = imgedge.shape[:2]
 crop_img = edges[10:height-10, 10:width-10];
 cv2.imshow("origin",crop_img)
-invert = (255-crop_img)
-cv2.imshow("invert",invert)
-
+invert = 255-crop_img
+cv2.imwrite("outkmean.jpg",invert);
+#mpimg.imsave("outkmean.jpg", invert)
+#cv2.imshow("invert",invert)
 #fill_img = ndi.binary_fill_holes(crop_img)
 #plt.savefig(pp, format='pdf')
 #plt.savefig('out.jpg', format='jpg', dpi=1000)

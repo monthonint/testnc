@@ -4,6 +4,8 @@ import skimage.morphology, skimage.data
 import cv2
 from scipy import ndimage as ndi
 from skimage import morphology
+import matplotlib.image as mpimg
+from matplotlib.image import imsave
 modelcolor = cv2.imread('E:/git/testnc/tum/K32.JPG')
 #modelcolor = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2HLS)
 #modelcolor = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2HSV)
@@ -31,6 +33,7 @@ ax.set_title('Filling the holes')
 
 #remove noise
 img_cleaned = morphology.remove_small_objects(fill_img, 21)
+imsave("outedge.jpg", img_cleaned)
 fig, ax = plt.subplots(figsize=(4, 3))
 ax.imshow(img_cleaned, cmap=plt.cm.gray, interpolation='nearest')
 ax.axis('off')
