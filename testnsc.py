@@ -6,7 +6,7 @@ from scipy import ndimage as ndi
 from skimage import morphology
 import matplotlib.image as mpimg
 from matplotlib.image import imsave
-modelcolor = cv2.imread('E:/git/testnc/tum/K32.JPG')
+modelcolor = cv2.imread('E:/git/testnc/tum/tum 1361.JPG')
 #modelcolor = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2HLS)
 #modelcolor = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2HSV)
 cv2.imshow("modelcolor",modelcolor)
