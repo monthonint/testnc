@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 from skimage import data
 from skimage.filters import threshold_otsu, threshold_adaptive
-modelcolor = cv2.imread('E:/git/testnc/tum/tum 1393.JPG')
+modelcolor = cv2.imread('E:/git/testnc/tum/k32.JPG')
 modelcolorgray = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2GRAY)
 imgred = modelcolor[:,:,0]
 cv2.imshow('imgred',imgred)
@@ -75,7 +75,8 @@ binary_adaptive = 255-binary_adaptive
 crop_bisobel = binary_adaptive[10:height-10, 10:width-10]
 cv2.imshow('binary sobel',binary_adaptive)
 fill_img = ndi.binary_fill_holes(crop_bisobel)
-outsobeladaptive = np.uint8(fill_img)
+img_cleaned = morphology.remove_small_objects(fill_img, 21)
+outsobeladaptive = np.uint8(img_cleaned)
 outsobeladaptive[outsobeladaptive>=1] = 255
 cv2.imwrite('sobelfill.jpg',outsobeladaptive)
 fig, ax = plt.subplots(figsize=(4, 3))
