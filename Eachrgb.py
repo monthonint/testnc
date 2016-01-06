@@ -75,7 +75,7 @@ binary_adaptive = 255-binary_adaptive
 crop_bisobel = binary_adaptive[10:height-10, 10:width-10]
 cv2.imshow('binary sobel',binary_adaptive)
 fill_img = ndi.binary_fill_holes(crop_bisobel)
-img_cleaned = morphology.remove_small_objects(fill_img, 21)
+img_cleaned = morphology.remove_small_objects(fill_img, 100)
 outsobeladaptive = np.uint8(img_cleaned)
 outsobeladaptive[outsobeladaptive>=1] = 255
 cv2.imwrite('sobelfill.jpg',outsobeladaptive)
