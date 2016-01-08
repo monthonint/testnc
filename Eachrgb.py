@@ -6,7 +6,7 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 from skimage import data
 from skimage.filters import threshold_otsu, threshold_adaptive
-modelcolor = cv2.imread('E:/git/testnc/tum/k32.JPG')
+modelcolor = cv2.imread('E:/git/testnc/tum/tum 1672.JPG')
 modelcolorgray = cv2.cvtColor(modelcolor,cv2.COLOR_BGR2GRAY)
 imgred = modelcolor[:,:,0]
 cv2.imshow('imgred',imgred)

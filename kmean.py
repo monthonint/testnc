@@ -42,7 +42,7 @@ def plot_colors(hist, centroids):
 	return bar
 
 
-modelcolor = cv2.imread('E:/git/testnc/tum/k32.JPG')
+modelcolor = cv2.imread('E:/git/testnc/tum/tum 1672.JPG')
 # reshape the image to be a list of pixels
 # image = modelcolor.reshape((modelcolor.shape[0] * modelcolor.shape[1], 3))
 # cluster the pixel intensities
