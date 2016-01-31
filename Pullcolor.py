@@ -13,7 +13,7 @@ from skimage.morphology import erosion, dilation, opening, closing, white_tophat
 from skimage.morphology import black_tophat, skeletonize, convex_hull_image
 from skimage.morphology import disk
 
-pic = cv2.imread('E:/git/testnc/tum/tum 1672.JPG')
+pic = cv2.imread('E:/git/testnc/tum/tum 1690.JPG')
 blackwrite = cv2.imread('E:/git/testnc/outdot.jpg',0)
 height, width = pic.shape[:2]
 croppic = pic[10:height-10, 10:width-10]
