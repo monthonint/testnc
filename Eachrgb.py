@@ -36,7 +36,7 @@ io.imsave("outsobelred.jpg", edgesr)
 io.imsave("outsobelgreen.jpg", edgesg)
 io.imsave("outsobelblue.jpg", edgesb)
 io.imsave("outsobelrgb.jpg", edgergb)
-
+io.imsave("outsobelrgba.jpg", edgergb)
 sobelrgb = cv2.imread('outsobelrgb.jpg',0)
 cv2.imshow('sobelrgb',sobelrgb)
 sobelr = cv2.imread('outsobelred.jpg',0)
