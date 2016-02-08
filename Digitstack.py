@@ -32,8 +32,7 @@ contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMP
 
 samples =  np.empty((0,100))
 responses = []
-keys = [i for i in range(48,58)]
-
+keys = [i for i in range(47,58)]
 for cnt in contours:
     if cv2.contourArea(cnt)>50:
         [x,y,w,h] = cv2.boundingRect(cnt)

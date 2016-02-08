@@ -43,7 +43,7 @@ print model
 ############################# testing part  #########################
 
 im = cv2.imread('./tum/tum 1690.JPG')
-im2 = cv2.imread('./sign.jpg',0)
+im2 = cv2.imread('./sign1.jpg',0)
 copyim2 = im2
 height, width = im.shape[:2]
 im = im[10:height-10, 10:width-10]

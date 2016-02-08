@@ -21,7 +21,7 @@ from sklearn.svm import SVC
 from sklearn import preprocessing
 data = open("dataimg.csv", "w")
 print os.getcwd()
-image = cv2.imread("E:/git/testnc/outdot.jpg",0)
+image = cv2.imread("./sobelfill.jpg",0)
 
 image[image<127]=0
 image[image>=127]=255
@@ -64,20 +64,25 @@ data_test = np.loadtxt('dataimg.csv', delimiter=',')
 img = data_test[:, 0:2]
 # make predictions
 expected = y
-predicted = clf.predict(img)
+predicted = model.predict(img)
 # summarize the fit of the model
 # print(metrics.classification_report(expected, predicted))
 # print(metrics.confusion_matrix(expected, predicted))
 print predicted
+print model.score(X,y)
 for i in range(0,len(predicted)):
     if(predicted[i]> 0.0):
         for j in props[int(data_test[i, 3])].coords:
             yi,xi = j
             image[yi][xi] = 255
+            copyimg[yi][xi]= 255
     else:
         for k in props[int(data_test[i, 3])].coords:
             yi,xi = k
             image[yi][xi] = 0
+            copyimg[yi][xi]= 0
 cv2.imwrite('sign.jpg',image)
+cv2.imwrite('sign1.jpg',copyimg)
+cv2.imshow('copyimg',copyimg)
 cv2.imshow('Picture',image)
 cv2.waitKey(0)
