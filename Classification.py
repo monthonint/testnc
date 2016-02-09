@@ -53,15 +53,26 @@ for prop in props:
         data.write(str(prop.label-1)+ "\n")
 data.close()
 data_train = np.loadtxt('data.csv', delimiter=',')
-X = data_train[:, 0:2]
+X = data_train[:, 0:3]
 y = data_train[:, 3]
+
+#Normalized Data using scaler
+scaler = preprocessing.StandardScaler().fit(X)
+X = scaler.transform(X)
+
+print "X",X
+print "Y",y
 clf = ExtraTreesClassifier(n_estimators=100).fit(X, y)
 # fit a SVM model to the data
 model = SVC()
 model.fit(X, y)
+
 print(model)
 data_test = np.loadtxt('dataimg.csv', delimiter=',')
-img = data_test[:, 0:2]
+img = data_test[:, 0:3]
+# Normalized test data using scaler
+img = scaler.transform(img)
+
 # make predictions
 expected = y
 predicted = model.predict(img)
@@ -71,7 +82,8 @@ predicted = model.predict(img)
 print predicted
 print model.score(X,y)
 for i in range(0,len(predicted)):
-    if(predicted[i]> 0.0):
+    [x,y,x1,y1] = props[i].bbox
+    if(predicted[i]> 0.0 and ((x1-x)>(y1-y))):
         for j in props[int(data_test[i, 3])].coords:
             yi,xi = j
             image[yi][xi] = 255

@@ -32,12 +32,12 @@ contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMP
 
 samples =  np.empty((0,100))
 responses = []
-keys = [i for i in range(47,58)]
+keys = [i for i in range(48,58)]
 for cnt in contours:
     if cv2.contourArea(cnt)>50:
         [x,y,w,h] = cv2.boundingRect(cnt)
 
-        if  h>28:
+        if  h>20:
             cv2.rectangle(im,(x,y),(x+w,y+h),(0,0,255),2)
             roi = thresh[y:y+h,x:x+w]
             roismall = cv2.resize(roi,(10,10))
