@@ -1,12 +1,9 @@
 import cv2
 import numpy as np
-from skimage.filters import threshold_otsu, threshold_adaptive
-from skimage import data, io, filters , feature ,morphology
-import skimage.morphology, skimage.data
-import skimage.measure , skimage.measure
-import matplotlib.pyplot as plt
+from skimage import io
 import math
 
+#Sort contour renference http://www.pyimagesearch.com/2015/04/20/sorting-contours-using-python-and-opencv/
 def sort_contours(cnts, method="left-to-right"):
 	# initialize the reverse flag and sort index
 	reverse = False
@@ -30,61 +27,44 @@ def sort_contours(cnts, method="left-to-right"):
 	# return the list of sorted contours and bounding boxes
 	return (cnts, boundingBoxes)
 
-#######   training part    ###############
+#training part
+#load data sample response
 samples = np.loadtxt('generalsamples.data',np.float32)
 responses = np.loadtxt('generalresponses.data',np.float32)
 responses = responses.reshape((responses.size,1))
-
+#create model
 model = cv2.KNearest()
 model.train(samples,responses)
 
-print model
-
-############################# testing part  #########################
-
+#Ans digits
+#Read data
 im = cv2.imread('./tum/tum 1690.JPG')
-im2 = cv2.imread('./sign1.jpg',0)
-copyim2 = im2
+#Read Sign
+im2 = cv2.imread('./sign.jpg',0)
+#Find shape
 height, width = im.shape[:2]
+#Improve size
 im = im[10:height-10, 10:width-10]
+#Edit value 0 and 1
 im2[im2<127]=0
 im2[im2>=127]=1
+#Fill color in image
 im[:,:,0] = im[:,:,0]*im2
 im[:,:,1] = im[:,:,1]*im2
 im[:,:,2] = im[:,:,2]*im2
+#Prepare data for draw answer
 out = np.zeros(im.shape,np.uint8)
+#Change RGB to gray
 gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
-# io.imsave("outsobelanswer.jpg", img)
-# img = cv2.imread("outsobelanswer.jpg",0)
-# copyso = 255-img
-# block_size = 40
-# binary_adaptive = threshold_adaptive(copyso, block_size, offset=10)
-# binary_adaptive = [not i for i in binary_adaptive]
-# print "binary",binary_adaptive
-"""binary_adaptive = np.uint8(binary_adaptive)
-binary_adaptive[binary_adaptive==1] = 255
-binary_adaptive = 255-binary_adaptive"""
-# img_cleaned = morphology.remove_small_objects(binary_adaptive, 1000)
-# outsobeladaptive = np.uint8(img_cleaned)
-# outsobeladaptive[outsobeladaptive>=1] = 255
-# fig, ax = plt.subplots(figsize=(4, 3))
-# io.imshow(img_cleaned)
-# blur = cv2.GaussianBlur(gray,(5,5),0)
-# thresh = cv2.adaptiveThreshold(blur,255,1,1,11,2)
 ret,th1 = cv2.threshold(gray,127,255,cv2.THRESH_BINARY_INV)
 kernel = np.ones((2,2),np.uint8)
 opening = cv2.morphologyEx(th1, cv2.MORPH_OPEN, kernel)
 th1 = 255-opening
 thresh = cv2.adaptiveThreshold(th1,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
 thresh = cv2.adaptiveThreshold(thresh,255,1,1,11,2)
-fig, ax = plt.subplots(figsize=(4, 3))
-io.imshow(thresh)
-io.imsave("thresh.jpg",thresh)
-plt.show()
+#Find contour
 contours,hierarchy = cv2.findContours(thresh,cv2.RETR_CCOMP,cv2.CHAIN_APPROX_SIMPLE)
 contours,bbox = sort_contours(contours)
-# label = skimage.measure.label(copyim2,connectivity=copyim2.ndim)
-# props = skimage.measure.regionprops(label)
 index =0
 answer = ""
 [x0,y0,w0,h0] = [0,0,0,0]
@@ -105,11 +85,6 @@ for cnt in contours:
                 [x1,y1,w1,h1] = cv2.boundingRect(cnt)
                 distance = math.sqrt(math.pow(math.fabs(x1-x0),2)+math.pow(math.fabs(x1-x0),2))
                 if distance<(w0+w1):
-                    print str(x1)+ " "+str(y1)+ " "+ str(x0)+ " "+str(y0)
-                    print distance
-                    print "index : "+str(index)+" "+"index-1 : "+str(index-1)
-                    print "w0 : "+str(w0)+" "+"w1 : "+str(w1)
-                    print string
                     answer += string
                 else:
                     answer = string
@@ -120,7 +95,5 @@ for cnt in contours:
             cv2.putText(out,string,(x,y+h),0,1,(0,255,0))
             index+=1
 print(answer)
-cv2.imshow('im',im)
-cv2.imshow('out',out)
 io.imsave('answer.jpg',out)
 cv2.waitKey(0)

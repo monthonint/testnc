@@ -71,7 +71,7 @@ copyso = 255-copyso
 cv2.imshow("copysobel",copyso)
 
 
-block_size = 40
+block_size = 20
 binary_adaptive = threshold_adaptive(copyso, block_size, offset=10)
 binary_adaptive = np.uint8(binary_adaptive)
 binary_adaptive[binary_adaptive==1] = 255
@@ -82,6 +82,7 @@ fill_img = ndi.binary_fill_holes(crop_bisobel)
 print "fill",fill_img
 img_cleaned = morphology.remove_small_objects(fill_img, 100)
 outsobeladaptive = np.uint8(img_cleaned)
+print outsobeladaptive
 outsobeladaptive[outsobeladaptive>=1] = 255
 cv2.imwrite('sobelfill.jpg',outsobeladaptive)
 fig, ax = plt.subplots(figsize=(4, 3))
