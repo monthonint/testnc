@@ -76,6 +76,7 @@ kernel = np.ones((2,2),np.uint8)
 opening = cv2.morphologyEx(th1, cv2.MORPH_OPEN, kernel)
 th1 = 255-opening
 thresh = cv2.adaptiveThreshold(th1,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+#blur = cv2.GaussianBlur(thresh,(5,5),0)
 thresh = cv2.adaptiveThreshold(thresh,255,1,1,11,2)
 fig, ax = plt.subplots(figsize=(4, 3))
 io.imshow(thresh)
