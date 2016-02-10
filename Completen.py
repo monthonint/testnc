@@ -130,7 +130,7 @@ img = scaler.transform(img)
 # make predictions
 expected = y
 predicted = model.predict(img)
-print model.score(img,y)
+print model.score(X,y)
 #Draw white region
 for i in range(0,len(predicted)):
     [x,y,x1,y1] = props[i].bbox
