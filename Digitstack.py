@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from skimage import io
 import matplotlib.pyplot as plt
-
+import os
 #Sort contour renference http://www.pyimagesearch.com/2015/04/20/sorting-contours-using-python-and-opencv/
 def sort_contours(cnts, method="left-to-right"):
 	# initialize the reverse flag and sort index
@@ -52,7 +52,7 @@ responses = []
 keys = [i for i in range(48,58)]
 #keep data number 0-9
 for cnt in contours:
-    if cv2.contourArea(cnt)>50:
+    if cv2.contourArea(cnt)>40:
         [x,y,w,h] = cv2.boundingRect(cnt)
         if  h>20:
             cv2.rectangle(im,(x,y),(x+w,y+h),(0,0,255),2)

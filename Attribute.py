@@ -3,7 +3,7 @@ import skimage.measure , skimage.measure
 import cv2
 import numpy as np
 import os.path
-
+import math
 #Create Attribute
 #Answer for sign (sign = 1 , no sign = 0)
 while(True):
@@ -32,6 +32,7 @@ elif int(inputst) == 0:
      else:
         os.mkdir("nosign")
         path = "./nosign/"
+
 while(True):
     #Get name file and type
     namefile = raw_input("Enter your name of file: ")

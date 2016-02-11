@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 
-img = cv2.imread('./digits.png')
+img = cv2.imread('digits.png')
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
 # Now we split the image to 5000 cells, each 20x20 size
@@ -31,11 +31,3 @@ matches = result==test_labels
 correct = np.count_nonzero(matches)
 accuracy = correct*100.0/result.size
 print accuracy
-# save the data
-np.savez('knn_data.npz',train=train, train_labels=train_labels)
-
-# Now load the data
-with np.load('knn_data.npz') as data:
-    print data.files
-    train = data['train']
-    train_labels = data['train_labels']

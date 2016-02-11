@@ -70,8 +70,8 @@ binary_adaptive = 255-binary_adaptive
 crop_bisobel = binary_adaptive[10:height-10, 10:width-10]
 #fill object in region
 fill_img = ndi.binary_fill_holes(crop_bisobel)
-#Remove noise size 100
-img_cleaned = morphology.remove_small_objects(fill_img, 100)
+#Remove noise size 150
+img_cleaned = morphology.remove_small_objects(fill_img, 150)
 #Edit type is uint8
 outsobeladaptive = np.uint8(img_cleaned)
 #Improve value 1 = 2555
@@ -117,7 +117,7 @@ scaler = preprocessing.StandardScaler().fit(X)
 X = scaler.transform(X)
 
 # fit a SVM model to the data
-model = SVC(kernel='rbf', gamma=1, C=100)
+model = SVC(kernel='rbf', gamma=40, C=0.08)
 model.fit(X, y)
 
 #Load data for answer
@@ -130,7 +130,6 @@ img = scaler.transform(img)
 # make predictions
 expected = y
 predicted = model.predict(img)
-print model.score(X,y)
 #Draw white region
 for i in range(0,len(predicted)):
     [x,y,x1,y1] = props[i].bbox
@@ -175,11 +174,13 @@ out = np.zeros(im.shape,np.uint8)
 #Change RGB to gray
 gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
 ret,th1 = cv2.threshold(gray,127,255,cv2.THRESH_BINARY_INV)
-kernel = np.ones((2,2),np.uint8)
-opening = cv2.morphologyEx(th1, cv2.MORPH_OPEN, kernel)
-th1 = 255-opening
+# kernel = np.ones((2,2),np.uint8)
+# opening = cv2.morphologyEx(th1, cv2.MORPH_OPEN, kernel)
+th1 = 255-th1
 thresh = cv2.adaptiveThreshold(th1,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
 thresh = cv2.adaptiveThreshold(thresh,255,1,1,11,2)
+io.imshow(thresh)
+io.show()
 #Find contour
 contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 if len(contours)!=0:
@@ -190,17 +191,17 @@ answer = ""
 for cnt in contours:
     if cv2.contourArea(cnt)>40:
         [x,y,w,h] = cv2.boundingRect(cnt)
-        if  (h>12 and h>w):
+        if  (h>15 and h>w):
             cv2.rectangle(im,(x,y),(x+w,y+h),(0,255,0),2)
             roi = thresh[y:y+h,x:x+w]
             roismall = cv2.resize(roi,(10,10))
             roismall = roismall.reshape((1,100))
             roismall = np.float32(roismall)
-            retval, results, neigh_resp, dists = model.find_nearest(roismall, k = 1)
+            retval, results, neigh_resp, dists = model.find_nearest(roismall, k = 5)
             string = str(int((results[0][0])))
             if index >0:
                 [x1,y1,w1,h1] = cv2.boundingRect(cnt)
-                distance = math.sqrt(math.pow(math.fabs(x1-x0),2)+math.pow(math.fabs(x1-x0),2))
+                distance = math.sqrt(math.pow(math.fabs(x1-x0),2)+math.pow(math.fabs(y1-y0),2))
                 if distance<(w0+w1):
                     answer += string
                 else:
