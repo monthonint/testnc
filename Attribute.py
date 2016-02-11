@@ -57,9 +57,9 @@ while(True):
         y0, x0 = prop.centroid
         if(image[int(y0)][int(x0)]==255):
             bbox = (prop.bbox[2]-prop.bbox[0])*(prop.bbox[3]-prop.bbox[1])
-            ratiobbox = "{0:.5f}".format((prop.bbox[3]-prop.bbox[1])/float(prop.bbox[2]-prop.bbox[0]))
-            ratioarea = "{0:.5f}".format(bbox/float(prop.area))
-            ratiomami = "{0:.5f}".format(prop.major_axis_length/prop.minor_axis_length)
+            ratiobbox = "{0:.6f}".format((prop.bbox[3]-prop.bbox[1])/float(prop.bbox[2]-prop.bbox[0]))
+            ratioarea = "{0:.6f}".format(bbox/float(prop.area))
+            ratiomami = "{0:.6f}".format(prop.major_axis_length/prop.minor_axis_length)
             data.write(str(ratioarea) + ",")
             data.write(str(ratiobbox) + ",")
             data.write(str(ratiomami) + ",")

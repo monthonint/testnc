@@ -12,7 +12,7 @@ from sklearn.svm import SVC
 from sklearn import preprocessing
 import math
 import warnings
-
+from sklearn import svm
 #Sort contour renference http://www.pyimagesearch.com/2015/04/20/sorting-contours-using-python-and-opencv/
 def sort_contours(cnts, method="left-to-right"):
 	# initialize the reverse flag and sort index
@@ -100,9 +100,9 @@ for prop in props:
     y0, x0 = prop.centroid
     if(image[int(y0)][int(x0)]==255):
         bbox = (prop.bbox[2]-prop.bbox[0])*(prop.bbox[3]-prop.bbox[1])
-        ratiobbox = "{0:.5f}".format((prop.bbox[3]-prop.bbox[1])/float(prop.bbox[2]-prop.bbox[0]))
-        ratioarea = "{0:.5f}".format(bbox/float(prop.area))
-        ratiomami = "{0:.5f}".format(prop.major_axis_length/prop.minor_axis_length)
+        ratiobbox = "{0:.6f}".format((prop.bbox[3]-prop.bbox[1])/float(prop.bbox[2]-prop.bbox[0]))
+        ratioarea = "{0:.6f}".format(bbox/float(prop.area))
+        ratiomami = "{0:.6f}".format(prop.major_axis_length/prop.minor_axis_length)
         data.write(str(ratioarea) + ",")
         data.write(str(ratiobbox) + ",")
         data.write(str(ratiomami) + ",")
@@ -117,7 +117,7 @@ scaler = preprocessing.StandardScaler().fit(X)
 X = scaler.transform(X)
 
 # fit a SVM model to the data
-model = SVC(C=100)
+model = SVC(kernel='rbf', gamma=1, C=100)
 model.fit(X, y)
 
 #Load data for answer
@@ -134,7 +134,7 @@ print model.score(X,y)
 #Draw white region
 for i in range(0,len(predicted)):
     [x,y,x1,y1] = props[i].bbox
-    if(predicted[i]> 0.0 and ((x1-x)>(y1-y))):
+    if(predicted[i]== 1.0):
         for j in props[int(data_test[i, 3])].coords:
             yi,xi = j
             copyimg[yi][xi]= 255
@@ -145,7 +145,6 @@ for i in range(0,len(predicted)):
 
 #Save image that has signs.
 cv2.imwrite('sign.jpg',copyimg)
-
 #training part
 #load data sample response
 samples = np.loadtxt('generalsamples.data',np.float32)
@@ -183,14 +182,15 @@ thresh = cv2.adaptiveThreshold(th1,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH
 thresh = cv2.adaptiveThreshold(thresh,255,1,1,11,2)
 #Find contour
 contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-#contours = sort_contours(contours)
+if len(contours)!=0:
+    contours = sort_contours(contours)
 index =0
 answer = ""
 [x0,y0,w0,h0] = [0,0,0,0]
 for cnt in contours:
     if cv2.contourArea(cnt)>40:
         [x,y,w,h] = cv2.boundingRect(cnt)
-        if  (h>15 and h>w):
+        if  (h>12 and h>w):
             cv2.rectangle(im,(x,y),(x+w,y+h),(0,255,0),2)
             roi = thresh[y:y+h,x:x+w]
             roismall = cv2.resize(roi,(10,10))
@@ -217,3 +217,4 @@ io.imshow(im)
 io.show()
 warnings.filterwarnings("ignore")
 io.imsave("answer.jpg", out)
+io.imsave("imageanswer.jpg", im)
