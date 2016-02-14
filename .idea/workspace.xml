@@ -24,7 +24,7 @@
       <file leaf-file-name="Complete.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Complete.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.0708215">
+            <state vertical-scroll-proportion="2.8895185">
               <caret line="246" column="35" selection-start-line="246" selection-start-column="35" selection-end-line="246" selection-end-column="35" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -422,7 +422,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16294643" sideWeight="0.46454766" order="0" side_tool="false" content_ui="combo" />
@@ -842,7 +842,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Complete.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.0708215">
+        <state vertical-scroll-proportion="2.8895185">
           <caret line="246" column="35" selection-start-line="246" selection-start-column="35" selection-end-line="246" selection-end-column="35" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
