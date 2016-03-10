@@ -49,7 +49,12 @@ else:
 listfile = os.listdir( path )
 print listfile
 print len(listfile)
+count = 0
 for filename in listfile:
+    count += 1
+    #file is not picture
+    if not filename.endswith(".jpg"):
+        continue
     #Get name and type
     name = "./"+"set1example"+"/"+filename
     print filename
@@ -178,6 +183,7 @@ for filename in listfile:
     height, width = im.shape[:2]
     #Improve size
     im = im[10:height-10, 10:width-10]
+    height1, width1 = im.shape[:2]
     #Edit value 0 and 1
     im2[im2<127]=0
     im2[im2>=127]=1
@@ -185,52 +191,83 @@ for filename in listfile:
     im[:,:,0] = im[:,:,0]*im2
     im[:,:,1] = im[:,:,1]*im2
     im[:,:,2] = im[:,:,2]*im2
+    for x in range(width1):
+        for y in range(height1):
+            px = im[y][x]
+            if px[0] >100 or px[1] > 100 or px[2] > 100:
+                    px[0] = 255
+                    px[1] = 255
+                    px[2] = 255
     #Prepare data for draw answer
     out = np.zeros(im.shape,np.uint8)
     #Change RGB to gray
     gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
-    ret,th1 = cv2.threshold(gray,127,255,cv2.THRESH_BINARY_INV)
-    # kernel = np.ones((2,2),np.uint8)
-    # opening = cv2.morphologyEx(th1, cv2.MORPH_OPEN, kernel)
-    th1 = 255-th1
-    thresh = cv2.adaptiveThreshold(th1,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
-    thresh = cv2.adaptiveThreshold(thresh,255,1,1,11,2)
+    #ret,th1 = cv2.threshold(gray,127,255,cv2.THRESH_BINARY_INV)
+    test = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+    #io.imsave('signbw'+str(count)+'.jpg',test)
+    th1 = 255-test
+    copy = th1.copy()
+    con,hierarchy = cv2.findContours(copy,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    [xi,yi,wi,hi] = [0,0,0,0]
+    for cnt in con:
+        [x,y,w,h] = cv2.boundingRect(cnt)
+        if(wi == 0 and hi ==0):
+            [xi,yi,wi,hi] = [x,y,w,h]
+        elif(w*h>wi*hi):
+            [xi,yi,wi,hi] = [x,y,w,h]
+    print 'x:'+str(xi)+'y:'+str(yi)+'w:'+str(wi)+'h:'+str(hi)
+    crop = th1[yi:yi + hi, xi:xi+wi]
+    resize = crop
+    kernel = np.ones((1,1),np.uint8)
+    if wi<100 and hi<85 and xi!=0 and yi !=0:
+        resize = cv2.resize(resize,(97, 83))
+        resize[resize<127]=0
+        resize[resize>=127]=255
+        th1 = cv2.morphologyEx(resize, cv2.MORPH_OPEN, kernel)
+    else:
+        th1 = cv2.morphologyEx(th1, cv2.MORPH_OPEN, kernel)
+    th1 = cv2.morphologyEx(th1, cv2.MORPH_CLOSE, kernel)
+    #cv2.imshow('pic',th1)
+    #cv2.waitKey(0)
+    #thresh = cv2.adaptiveThreshold(th1,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
+    #thresh = cv2.adaptiveThreshold(thresh,255,1,1,11,2)
+    io.imsave('./signbw/'+'signb'+str(count)+'.jpg',th1)
     #io.imshow(thresh)
     #io.show()
     #Find contour
-    contours,hierarchy = cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    contours,hierarchy = cv2.findContours(th1,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     if len(contours)!=0:
         contours = sort_contours(contours)
     index =0
     answer = ""
     [x0,y0,w0,h0] = [0,0,0,0]
     for cnt in contours:
-        if cv2.contourArea(cnt)>40:
-            [x,y,w,h] = cv2.boundingRect(cnt)
-            if  (h>15 and h>w):
-                cv2.rectangle(im,(x,y),(x+w,y+h),(0,255,0),2)
-                roi = thresh[y:y+h,x:x+w]
-                roismall = cv2.resize(roi,(10,10))
-                roismall = roismall.reshape((1,100))
-                roismall = np.float32(roismall)
-                retval, results, neigh_resp, dists = model.find_nearest(roismall, k = 5)
-                string = str(int((results[0][0])))
-                if index >0:
-                    [x1,y1,w1,h1] = cv2.boundingRect(cnt)
-                    distance = math.sqrt(math.pow(math.fabs(x1-x0),2)+math.pow(math.fabs(y1-y0),2))
-                    if distance<(w0+w1):
-                        answer += string
-                    else:
-                        print answer
-                        answertxt.write(answer+" , ")
-                        answercsv.write(answer+",")
-                        answer = string
-                    [x0,y0,w0,h0] = [x1,y1,w1,h1]
+        #if cv2.contourArea(cnt)>40:
+        [x,y,w,h] = cv2.boundingRect(cnt)
+        if  (h>w and h*w>100):
+            cv2.rectangle(im,(x,y),(x+w,y+h),(0,255,0),2)
+            roi = th1[y:y+h,x:x+w]
+            roismall = cv2.resize(roi,(10,10))
+            roismall = roismall.reshape((1,100))
+            roismall = np.float32(roismall)
+            retval, results, neigh_resp, dists = model.find_nearest(roismall, k = 5)
+            string = str(int((results[0][0])))
+            if index >0:
+                [x1,y1,w1,h1] = cv2.boundingRect(cnt)
+                distance = math.sqrt(math.pow(math.fabs(x1-x0),2)+math.pow(math.fabs(y1-y0),2))
+                if distance<(w0+w1):
+                    answer += string
                 else:
+                    print answer
+                    answertxt.write(answer+" , ")
+                    answercsv.write(answer+",")
                     answer = string
-                    [x0,y0,w0,h0] = cv2.boundingRect(cnt)
-                cv2.putText(out,string,(x,y+h),0,1,(0,255,0))
-                index+=1
+                [x0,y0,w0,h0] = [x1,y1,w1,h1]
+            else:
+                answer = string
+                [x0,y0,w0,h0] = cv2.boundingRect(cnt)
+            cv2.putText(out,string,(x,y+h),0,1,(0,255,0))
+            index+=1
     print(answer)
     answertxt.write(answer+"\n")
     answercsv.write(answer+"\n")
@@ -241,12 +278,12 @@ for filename in listfile:
     io.imsave("imageanswer.jpg", im)
 answertxt.close()
 answercsv.close()
+############### ID to IMG section ################
 idimg = open('idimg.txt','w')
-while(True):
+idList = open(path+'round2_set_2_quest.txt','r')
+for line in idList:
+    idrunner = line.split(None,1)[0]
     check = False
-    idrunner = raw_input("Enter id (Put -1 for stop) : ")
-    if(idrunner=='-1'):
-        break
     ans = idrunner+" :: "
     with open('answer.csv', 'r') as f:
         reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
@@ -262,5 +299,7 @@ while(True):
     idimg.write(ans)
     idimg.write('\n')
     print ans
+
+idList.close()
 idimg.close()
 
