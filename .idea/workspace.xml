@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5a69e489-4fdf-433d-b697-78c3a1881597" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/answer.csv" afterPath="$PROJECT_DIR$/answer.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/answer.jpg" afterPath="$PROJECT_DIR$/answer.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imageanswer.jpg" afterPath="$PROJECT_DIR$/imageanswer.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/outsobel.jpg" afterPath="$PROJECT_DIR$/outsobel.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sign.jpg" afterPath="$PROJECT_DIR$/sign.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/testanaconda.iml" afterPath="$PROJECT_DIR$/.idea/testanaconda.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Complete.py" afterPath="$PROJECT_DIR$/Complete.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/answer.txt" afterPath="$PROJECT_DIR$/answer.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataimg.csv" afterPath="$PROJECT_DIR$/dataimg.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idimg.txt" afterPath="$PROJECT_DIR$/idimg.txt" />
-    </list>
+    <list default="true" id="5a69e489-4fdf-433d-b697-78c3a1881597" name="Default" comment="" />
     <ignored path="testanaconda.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -436,7 +423,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16251831" sideWeight="0.44547564" order="0" side_tool="false" content_ui="combo" />
